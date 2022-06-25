@@ -1,0 +1,46 @@
+extend type Query {
+   users(page: Int, size: Int): UsersPage
+}
+
+extend type Mutation {
+    createUser(input: CreateUserInput!) : Boolean!
+}
+
+type User implements BasicRecord {
+    id: ID!
+    firstName: String!
+    lastName: String!
+    email: String!
+    organization: Organization! @goField(forceResolver: true)
+    deleted: Boolean!
+    createdBy: User! @goField(forceResolver: true)
+    updatedBy: User @goField(forceResolver: true)
+    createdAt: Time!
+    updatedAt: Time
+}
+
+type UsersPage {
+    users: [User!]
+    pagination: Pagination!
+}
+
+type Organization implements BasicRecord{
+    id: ID!
+    name: String!
+    deleted: Boolean!
+    createdBy: User! @goField(forceResolver: true)
+    updatedBy: User @goField(forceResolver: true)
+    createdAt: Time!
+    updatedAt: Time
+}
+
+
+# Inputs
+
+input CreateUserInput {
+    firstName: String!
+    lastName: String!
+    email: String!
+    organizationId: String!
+}
+
